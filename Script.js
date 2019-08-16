@@ -28,7 +28,7 @@ window.onload = function () {
 	var game = new Game(400, 500);  				//画面サイズを400*500にする。（このサイズだとスマホでも快適なのでおススメ）
 
 	//結果ツイート時にURLを貼るため、このゲームのURLをここに記入
-	var url = "https://twitter.com/hothukurou";
+	var url = "https://satsumawagashi.github.io/imas-nanjamonja/";
 	url = encodeURI(url); //きちんとURLがツイート画面に反映されるようにエンコードする
 	/////////////////////////////////////////////////
 	//ゲーム開始前に必要な画像・音を読み込む部分
@@ -325,7 +325,7 @@ window.onload = function () {
 
 		S_Tweet.ontouchend = function () {				//S_Tweetボタンをタッチした（タッチして離した）時にこの中の内容を実行する
 			//ツイートＡＰＩに送信
-			window.open("http://twitter.com/intent/tweet?text=アイマスアイドル12人にあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aサイトにアクセスするだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url); //ハッシュタグにahogeタグ付くようにした。
+			window.open("http://twitter.com/intent/tweet?text=アイマスアイドル12人にあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aスマホやタブレットだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url); 
 		};
 
 	};

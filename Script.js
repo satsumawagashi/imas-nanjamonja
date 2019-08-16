@@ -90,7 +90,7 @@ window.onload = function () {
 			NamedFlgArray.push(0);
 		}
 
-		var Round = 59;								//ラウンド
+		var Round = 0;								//ラウンド
 
 		var State = 0;								//現在のゲーム状態
 

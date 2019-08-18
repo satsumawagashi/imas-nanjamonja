@@ -5,7 +5,7 @@ var PlayerAmount = 8;
 // アイドルカード配列
 var CardArray = [];
 for (var i = 1; i <= 12; i++) {
-	CardArray.push('img/card/' + ('00' + i).slice(-3) + '.png');
+	CardArray.push('img/card/' + ('000' + i).slice(-3) + '.png');
 }
 
 // 1~12の数字が5回ずつランダムに出現する配列
@@ -57,6 +57,10 @@ window.onload = function () {
 	var B_Start = 'img/start.png';
 	game.preload([B_Start]);					//データを読み込んでおく
 
+	// 次ボタン
+	var B_Next = 'img/next.png';
+	game.preload([B_Next]);					//データを読み込んでおく
+
 	//リトライボタン
 	var B_Retry = "img/Retry.png";						//game.htmlからの相対パス
 	game.preload([B_Retry]);					//データを読み込んでおく
@@ -94,6 +98,8 @@ window.onload = function () {
 
 		var State = 0;								//現在のゲーム状態
 
+		var FrameCount = 0;
+
 		//グローバル変数終わり
 		/////////////////////////////////////////////////
 
@@ -117,7 +123,23 @@ window.onload = function () {
 		StartButton.image = game.assets[B_Start];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
 		S_TITLE.addChild(StartButton);
 		StartButton.ontouchend = function(){
+			game.assets[ClickSound].clone().play();		//クリックの音を鳴らす。
 			State = 1;
+		};
+
+
+		// 次へシーン
+		var S_NEXT = new Scene();
+		S_NEXT.backgroundColor = "black"; 			//S_ANSWERシーンの背景は黒くした
+
+		// 次へボタン
+		var NextButton = new Sprite(200, 100);
+		NextButton.moveTo(100,400);
+		NextButton.image = game.assets[B_Next];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
+		S_NEXT.addChild(NextButton);
+		NextButton.ontouchend = function(){
+			game.assets[ClickSound].clone().play();		//クリックの音を鳴らす。
+			State = 3;
 		};
 
 
@@ -149,6 +171,7 @@ window.onload = function () {
 		ScoreText.width = 400;							//横幅指定　今回画面サイズ400pxなので、width:400pxだと折り返して二行目表示してくれる
 		ScoreText.moveTo(20, 20);						//移動位置指定
 		S_WAIT.addChild(ScoreText);					//S_ANSWERシーンにこの画像を埋め込む
+		S_NEXT.addChild(ScoreText);
 
 		function getScoreString() {
 			var scoreString = '';
@@ -223,7 +246,7 @@ window.onload = function () {
 				game.popScene();					//現在のシーンを外す
 				game.pushScene(S_TITLE);				//S_TITLEシーンを読み込ませる
 			}
-			if (State == 1) {
+			/*if (State == 1) {
 				// カウントダウン初期化
 				game.popScene();					//現在のシーンを外す
 				game.pushScene(S_WAIT);				//S_WAITシーンを読み込ませる
@@ -231,9 +254,8 @@ window.onload = function () {
 				Bar.x = 0;
 				// Barのy座標を指定
 				Bar.y = 400;
-				ScoreText.text = 'ラウンド:' + String(Round + 1) + '<br>残り山札:' + String(60 - Round) + '枚<br>' + getScoreString();					//テキストに文字表示
+				ScoreText.text = 'プレイヤー' + String(Round % PlayerAmount + 1) + 'のターンです！<br>ラウンド:' + String(Round + 1) + '<br>残り山札:' + String(60 - Round) + '枚<br>' + getScoreString();					//テキストに文字表示
 				Card.image = game.assets[CardArray[ShuffleArray[Round]]];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
-				console.log(CardArray[ShuffleArray[Round]]);
 				//現在のテキスト表示
 				State = 2;							//カウントダウン中に移行
 			}
@@ -241,6 +263,21 @@ window.onload = function () {
 				// カウントダウン中
 				// Barを左に移動
 				Bar.x -= 3;
+			}*/
+			if (State == 1) {
+				// 次へ初期化
+				game.popScene();					//現在のシーンを外す
+				game.pushScene(S_NEXT);				//S_WAITシーンを読み込ませる
+				// FrameCountを初期化
+				FrameCount = 0;
+				ScoreText.text = /*'プレイヤー' + String(Round % PlayerAmount + 1) + 'のターンです！<br>' + */'ラウンド:' + String(Round + 1) + '<br>残り山札:' + String(60 - Round) + '枚<br>' + getScoreString();					//テキストに文字表示
+				Card.image = game.assets[CardArray[ShuffleArray[Round]]];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
+				//現在のテキスト表示
+				State = 2;							//次へに移行
+			}
+			if (State == 2) {
+				// 次へ
+				// 何もしない
 			}
 			if (State == 3) {
 				// 回答シーン
@@ -266,9 +303,6 @@ window.onload = function () {
 				State = 3
 			}
 		};
-
-
-
 		////////////////////////////////////////////////////////////////
 		//結果画面
 		S_END = new Scene();
@@ -325,7 +359,7 @@ window.onload = function () {
 
 		S_Tweet.ontouchend = function () {				//S_Tweetボタンをタッチした（タッチして離した）時にこの中の内容を実行する
 			//ツイートＡＰＩに送信
-			window.open("http://twitter.com/intent/tweet?text=アイマスアイドル12人にあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aスマホやタブレットだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url); 
+			window.open("http://twitter.com/intent/tweet?text=アイマスアイドル12人にあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aスマホやタブレットだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url);
 		};
 
 	};

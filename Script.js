@@ -38,8 +38,20 @@ window.onload = function () {
 	var ClickSound = "sound/click.wav";						//game.htmlからの相対パス
 	game.preload([ClickSound]); 				//データを読み込んでおく
 
+	var StartSound = "sound/start.mp3";
+	game.preload([StartSound]); 				//データを読み込んでおく
+
+	var CarryOverSound = "sound/carryover.mp3";
+	game.preload([CarryOverSound]); 				//データを読み込んでおく
+
+	var CorrectSound = "sound/correct.mp3";
+	game.preload([CorrectSound]); 				//データを読み込んでおく
+
 	//アイドルカード画像
 	game.preload(CardArray);					//データを読み込んでおく
+
+	var StartImage = "img/bg/asuka-tatie.png";
+	game.preload([StartImage]); 				//データを読み込んでおく
 
 	//プレイヤーボタン
 	var ButtonArray = [];
@@ -107,23 +119,29 @@ window.onload = function () {
 		var S_TITLE = new Scene();
 		S_TITLE.backgroundColor = "black"; 			//S_ANSWERシーンの背景は黒くした
 
+		// 背景画像
+		var StartBG = new Sprite(400,400);
+		StartBG.moveTo(100, 100);
+		StartBG.image = game.assets[StartImage];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
+		S_TITLE.addChild(StartBG);
+
 		// タイトルテキスト
 		var TitleText = new Label();
 		TitleText.font = "30px Meiryo";				//フォントはメイリオ 20px 変えたかったらググってくれ
 		TitleText.color = 'rgba(255,255,255,1)';		//色　RGB+透明度　今回は白
 		TitleText.width = 400;							//横幅指定　今回画面サイズ400pxなので、width:400pxだと折り返して二行目表示してくれる
-		TitleText.moveTo(20, 100);						//移動位置指定
+		TitleText.moveTo(20, 50);						//移動位置指定
 		S_TITLE.addChild(TitleText);					//S_ANSWERシーンにこの画像を埋め込む
 
 		TitleText.text = 'アイマスナンジャモンジャ';
 
 		// スタートボタン
 		var StartButton = new Sprite(200, 75);
-		StartButton.moveTo(100,300);
+		StartButton.moveTo(100,400);
 		StartButton.image = game.assets[B_Start];			//読み込む画像の相対パスを指定。　事前にgame.preloadしてないと呼び出せない
 		S_TITLE.addChild(StartButton);
 		StartButton.ontouchend = function(){
-			game.assets[ClickSound].clone().play();		//クリックの音を鳴らす。
+			game.assets[StartSound].clone().play();		//クリックの音を鳴らす。
 			State = 1;
 		};
 
@@ -190,13 +208,14 @@ window.onload = function () {
 
 		// 回答時挙動
 		function answered(idx){
-			game.assets[ClickSound].clone().play();		//クリックの音を鳴らす。
 			// 得点計算
 			if (idx == 0) {
 				PointArray[0] = PointArray[0] + 1;
+				game.assets[CarryOverSound].clone().play();		//クリックの音を鳴らす。
 			} else {
 				PointArray[idx] += PointArray[0] + 1;
 				PointArray[0] = 0;
+				game.assets[CorrectSound].clone().play();		//クリックの音を鳴らす。
 			}
 			// ラウンド+1
 			Round += 1;

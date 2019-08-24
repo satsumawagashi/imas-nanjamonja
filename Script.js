@@ -378,7 +378,7 @@ window.onload = function () {
 
 		S_Tweet.ontouchend = function () {				//S_Tweetボタンをタッチした（タッチして離した）時にこの中の内容を実行する
 			//ツイートＡＰＩに送信
-			window.open("http://twitter.com/intent/tweet?text=アイマスアイドル12人にあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aスマホやタブレットだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url);
+			window.open("http://twitter.com/intent/tweet?text=アイマスの新アイドルたちにあだ名をつけたら、そのあだ名を誰よりも早く思い出して叫ぼう！%0d%0aスマホやタブレットだけで遊べるボードゲーム『アイマスナンジャモンジャ』&hashtags=アイマスナンジャモンジャ&url=" + url);
 		};
 
 	};
